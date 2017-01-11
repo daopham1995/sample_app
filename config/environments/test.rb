@@ -15,7 +15,7 @@ Rails.application.configure do
   # Configure public file server for tests with Cache-Control for performance.
   config.public_file_server.enabled = true
   config.public_file_server.headers = {
-    'Cache-Control' => 'public, max-age=3600'
+    "Cache-Control" => "public, max-age=3600"
   }
 
   # Show full error reports and disable caching.
@@ -32,7 +32,19 @@ Rails.application.configure do
   # Tell Action Mailer not to deliver emails to the real world.
   # The :test delivery method accumulates sent emails in the
   # ActionMailer::Base.deliveries array.
-  config.action_mailer.delivery_method = :test
+  config.action_mailer.delivery_method = :smtp
+  config.assets.raise_runtime_errors = true
+  config.action_mailer.default_url_options = {host: "localhost:3000",
+    protocol: "http://"}
+  config.action_mailer.smtp_settings = {
+    address: "smtp.gmail.com",
+    port: 587,
+    domain: "gmail.com",
+    user_name: ENV["GMAIL_USERNAME"],
+    password: ENV["GMAIL_PASSWORD"],
+    authentication: "plain",
+    enable_starttls_auto: true
+}
 
   # Print deprecation notices to the stderr.
   config.active_support.deprecation = :stderr
