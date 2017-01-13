@@ -10,7 +10,12 @@ class UsersController < ApplicationController
 
   def show
     redirect_to root_url unless @user.activated?
-    @microposts = @user.microposts.paginate page: params[:page]
+    @microposts = @user.microposts.order_by_time.paginate page: params[:page]
+    if current_user.following? @user
+      @active = current_user.active_relationships.find_by followed_id: @user.id
+    else
+      @active = current_user.active_relationships.build
+    end
   end
 
   def new
