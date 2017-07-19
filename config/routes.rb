@@ -8,6 +8,11 @@ Rails.application.routes.draw do
   post "/login", to: "sessions#create"
   delete "/logout", to: "sessions#destroy"
   resources :users, except: [:new]
+  resources :users do
+    get "/:relationship", on: :member,
+      to: "relationships#index", as: :relationships
+  end
+  resources :relationships, only: [:create, :destroy]
   resources :account_activations, only: [:edit]
   resources :password_resets, except: [:index, :show, :destroy]
   resources :microposts, only: [:create, :destroy]
